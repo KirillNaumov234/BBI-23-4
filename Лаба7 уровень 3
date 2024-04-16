@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+
+class country
+
+{
+    public string Name { get; set; }
+    public int AnswerCount { get; set; }
+
+    public country
+    (string name)
+    {
+        Name = name;
+        AnswerCount = 0;
+    }
+
+    public void AddAnswer()
+    {
+        AnswerCount++;
+    }
+
+    public double GetPercentage()
+    {
+        return (double)AnswerCount / TotalAnswerCount  *  100;
+    }
+
+    public static int TotalAnswerCount
+    {
+        get
+        {
+            return russia.TotalAnswerCount + japan.TotalAnswerCount;
+        }
+    }
+}
+
+class russia : country
+
+{
+    public static int TotalAnswerCount { get; private set; }
+
+    public russia() : base("russia")
+    {
+        TotalAnswerCount = 0;
+    }
+}
+
+class japan : country
+
+{
+    public static int TotalAnswerCount { get; private set; }
+
+    public japan() : base("japan")
+    {
+        TotalAnswerCount = 0;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        russia russia = new russia();
+        japan japan = new japan();
+
+        russia.AddAnswer();
+        russia.AddAnswer();
+        russia.AddAnswer();
+
+        japan.AddAnswer();
+        japan.AddAnswer();
+        japan.AddAnswer();
+
+        Console.WriteLine($"Ответы для России: {russia.GetPercentage()}%");
+        Console.WriteLine($"Ответы для Японии: {japan.GetPercentage()}%");
+
+        Console.WriteLine($"Ответы для обеих стран вместе: {country
+        .TotalAnswerCount}");
+    }
+}
