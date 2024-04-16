@@ -6,10 +6,8 @@ class Program
 {
     static void Main()
     {
-        // Словарь для хранения ответов и их частоты
         Dictionary<string, int> answers = new Dictionary<string, int>();
 
-        // Заполняем словарь ответами
         AddAnswer("собака", answers);
         AddAnswer("сакура", answers);
         AddAnswer("трудолюбие", answers);
@@ -20,8 +18,7 @@ class Program
         AddAnswer("технологии", answers);
         AddAnswer("сакура", answers);
         AddAnswer("трудолюбие", answers);
-
-        // Получаем ответы и их долю
+        
         var topFiveAnswers = GetTopFiveAnswers(answers);
 
         foreach (var answer in topFiveAnswers)
