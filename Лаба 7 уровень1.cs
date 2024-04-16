@@ -8,19 +8,17 @@ class Participant
     public string Society { get; set; }
     public double Attempt1Result { get; set; }
     public double Attempt2Result { get; set; }
-    public bool IsDisqualified { get; set; } // Новое свойство для отслеживания дисквалификации
+    public bool IsDisqualified { get; set; } 
 
     public double GetTotalResult()
     {
-        if (IsDisqualified) // Проверка на дисквалификацию перед расчетом суммы
-            return double.NaN;
+        if (IsDisqualified) return double.NaN;
         return Attempt1Result + Attempt2Result;
     }
 
     public void Disqualify()
     {
-        IsDisqualified = true; // Установка флага дисквалификации в true
-    }
+        IsDisqualified = true;}
 }
 
 class Program
