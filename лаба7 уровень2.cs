@@ -63,13 +63,11 @@ class Program
     {
         Competition competition = new Competition();
 
-        // Оценка прыжков
         competition.EvaluateJump(0, 3, 6); 
         competition.EvaluateJump(1, 3, 6); 
         competition.EvaluateJump(2, 3, 6); 
         competition.EvaluateJump(3, 3, 6); 
 
-        // Вывод результатов
         competition.PrintResults();
     }
 }
