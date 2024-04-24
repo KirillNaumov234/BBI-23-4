@@ -61,10 +61,8 @@ class JumpCompetition
         var protocol = new CompetitionProtocol(competitionResults);
         protocol.GenerateProtocol();
 
-        // Пример дисквалификации участника
         protocol.DisqualifyParticipant("Петров");
-
-        // Повторный вывод протокола после дисквалификации
+        
         protocol.GenerateProtocol();
     }
 }
