@@ -12,10 +12,8 @@ class Country
 
     protected void PrintSurveyResults(List<List<string>> responses)
     {
-        // Создаем словарь для подсчета количества ответов
         var answerCounts = new Dictionary<string, int>();
 
-        // Подсчитываем количество ответов
         foreach (var questionResponses in responses)
         {
             foreach (var answer in questionResponses)
@@ -27,12 +25,9 @@ class Country
                 answerCounts[answer]++;
             }
         }
-
-        // Получаем пять наиболее часто встречающихся ответов
         var topAnswers = answerCounts.OrderByDescending(kv => kv.Value)
                                      .Take(5);
 
-        // Выводим результаты
         foreach (var answer in topAnswers)
         {
             double percentage = (double)answer.Value / responses.Sum(r => r.Count) * 100;
@@ -49,35 +44,28 @@ class Program
 {
     static void Main()
     {
-        // Опросы по трем вопросам
         List<List<string>> responses = new List<List<string>>
         {
-            new List<string> { "Кошка", "Собака", "Кошка", "Рыба" }, // Ответы на вопрос а)
-            new List<string> { "Дружелюбие", "Упорство", "Трудолюбие", "Скромность" }, // Ответы на вопрос б)
-            new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" } // Ответы на вопрос в)
+            new List<string> { "Кошка", "Собака", "Кошка", "Рыба" }, 
+            new List<string> { "Дружелюбие", "Упорство", "Трудолюбие", "Скромность" }, 
+            new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" } 
         };
 
-        // Создаем объекты классов Russia и Japan
         Country russia = new Russia();
         Country japan = new Japan();
 
-        // Обработка ответов для каждой страны
         russia.ProcessResponses(responses);
         japan.ProcessResponses(responses);
 
-        // Объединенная обработка ответов для обеих стран
         CombineAndProcessResponses(russia, japan, responses);
     }
 
     static void CombineAndProcessResponses(params Country[] countries)
     {
-        // Создаем список для объединения всех ответов
         var combinedResponses = new List<List<string>>();
 
-        // Объединяем ответы из всех стран
         foreach (var country in countries)
         {
-            // Преобразуем объект в тип Country и вызываем метод ProcessResponses
             Country c = (Country)country;
             c.ProcessResponses(combinedResponses);
         }
