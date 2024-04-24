@@ -66,12 +66,11 @@ class JumpResult
 
     private double CalculateTotalScore()
     {
-        // Расчет итоговой оценки по результатам прыжков
-        double[] scores = { 5.0, 5.5, 6.0, 6.5 }; // Пример оценок
-        double difficultyCoefficient = 3.0; // Пример коэффициента сложности
+        double[] scores = { 5.0, 5.5, 6.0, 6.5 }; 
+        double difficultyCoefficient = 3.0; 
         double totalScore = (FirstAttempt + SecondAttempt) * difficultyCoefficient;
         Array.Sort(scores);
-        totalScore += scores[1] + scores[2] + scores[3]; // Убираем лучшую и худшую оценки
+        totalScore += scores[1] + scores[2] + scores[3];
         return totalScore;
     }
 }
