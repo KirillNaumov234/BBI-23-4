@@ -6,19 +6,16 @@ class RadioSurvey
 {
     static void Main()
     {
-        // Опросы по трем вопросам
         List<List<string>> responses = new List<List<string>>
         {
-            new List<string> { "Кошка", "Собака", "Кошка", "Рыба" }, // Ответы на вопрос а)
-            new List<string> { "Дружелюбие", "Упорство", "Трудолюбие", "Скромность" }, // Ответы на вопрос б)
-            new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" } // Ответы на вопрос в)
+            new List<string> { "Кошка", "Собака", "Кошка", "Рыба" }, 
+            new List<string> { "Дружелюбие", "Упорство", "Трудолюбие", "Скромность" }, 
+            new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" } 
         };
 
-        // Получение пяти наиболее часто встречающихся ответов по каждому вопросу
         var topAnswers = new List<List<string>>();
         foreach (var questionResponses in responses)
         {
-            // Если ответов нет, добавляем пустую строку
             if (questionResponses.Count == 0)
             {
                 topAnswers.Add(new List<string> { "" });
@@ -33,7 +30,6 @@ class RadioSurvey
             topAnswers.Add(groupedAnswers);
         }
 
-        // Вывод результатов
         Console.WriteLine("Ответы на вопрос а):");
         PrintTopAnswers(topAnswers[0]);
         Console.WriteLine("\nОтветы на вопрос б):");
@@ -42,7 +38,6 @@ class RadioSurvey
         PrintTopAnswers(topAnswers[2]);
     }
 
-    // Вспомогательный метод для вывода пяти наиболее часто встречающихся ответов и их долей
     static void PrintTopAnswers(List<string> answers)
     {
         if (answers.Count == 0)
@@ -51,7 +46,6 @@ class RadioSurvey
             return;
         }
 
-        // Вычисление доли каждого ответа в процентах
         var totalCount = answers.Count;
         var answerCounts = answers.GroupBy(answer => answer)
                                   .ToDictionary(group => group.Key, group => group.Count());
