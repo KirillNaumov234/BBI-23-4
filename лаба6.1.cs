@@ -53,7 +53,6 @@ class JumpCompetitionProtocol
     }
 }
 
-// Пример использования
 
 class Program
 {
