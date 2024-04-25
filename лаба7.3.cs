@@ -6,7 +6,7 @@ class Country
 {
     public virtual void ProcessResponses(List<List<string>> responses)
     {
-        Console.WriteLine("Результаты для класса: " + this.GetType().Name);
+        Console.WriteLine("Results for class: " + this.GetType().Name);
         PrintSurveyResults(responses);
     }
 
@@ -31,7 +31,7 @@ class Country
         foreach (var answer in topAnswers)
         {
             double percentage = (double)answer.Value / responses.Sum(r => r.Count) * 100;
-            Console.WriteLine($"Ответ: {answer.Key}, Доля: {percentage:F2}%");
+            Console.WriteLine($"Answer: {answer.Key}, Percentage: {percentage:F2}%");
         }
     }
 }
@@ -46,28 +46,15 @@ class Program
     {
         List<List<string>> responses = new List<List<string>>
         {
-            new List<string> { "Кошка", "Собака", "Кошка", "Рыба" }, 
-            new List<string> { "Дружелюбие", "Упорство", "Трудолюбие", "Скромность" }, 
-            new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" } 
+            new List<string> { "Cat", "Dog", "Cat", "Fish" }, 
+            new List<string> { "Friendliness", "Persistence", "Hard Work", "Modesty" }, 
+            new List<string> { "Sakura", "Samurai", "Sushi", "Sake", "Sumo" } 
         };
 
-        Country russia = new Russia();
-        Country japan = new Japan();
-
+        Russia russia = new Russia();
         russia.ProcessResponses(responses);
+
+        Japan japan = new Japan();
         japan.ProcessResponses(responses);
-
-        CombineAndProcessResponses(russia, japan, responses);
-    }
-
-    static void CombineAndProcessResponses(params Country[] countries)
-    {
-        var combinedResponses = new List<List<string>>();
-
-        foreach (var country in countries)
-        {
-            Country c = (Country)country;
-            c.ProcessResponses(combinedResponses);
-        }
     }
 }
