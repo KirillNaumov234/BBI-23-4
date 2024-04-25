@@ -2,11 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+class Participant
+{
+    public string LastName { get; }
+    public string Club { get; }
+    public double FirstAttempt { get; }
+    public double SecondAttempt { get; }
+
+    public Participant(string lastName, string club, double firstAttempt, double secondAttempt)
+    {
+        LastName = lastName;
+        Club = club;
+        FirstAttempt = firstAttempt;
+        SecondAttempt = secondAttempt;
+    }
+
+    public double GetTotalResult()
+    {
+        return FirstAttempt + SecondAttempt;
+    }
+
+    public override string ToString()
+    {
+        return $"{LastName,-10}\t{Club,-10}\t{GetTotalResult()}";
+    }
+}
+
 class JumpCompetitionProtocol
 {
-    private List<(string lastName, string club, double firstAttempt, double secondAttempt)> competitionResults;
+    private List<Participant> competitionResults;
 
-    public JumpCompetitionProtocol(List<(string, string, double, double)> results)
+    public JumpCompetitionProtocol(List<Participant> results)
     {
         competitionResults = results;
     }
@@ -14,8 +40,7 @@ class JumpCompetitionProtocol
     public void GenerateProtocol()
     {
         var sortedResults = competitionResults
-            .Select(r => (r.lastName, r.club, r.firstAttempt + r.secondAttempt))
-            .OrderByDescending(r => r.Item3)
+            .OrderByDescending(r => r.GetTotalResult())
             .ToList();
 
         Console.WriteLine("Место\tФамилия\t\tОбщество\tРезультат");
@@ -23,25 +48,25 @@ class JumpCompetitionProtocol
         for (int i = 0; i < sortedResults.Count; i++)
         {
             var result = sortedResults[i];
-            Console.WriteLine($"{i + 1}\t{result.lastName,-10}\t{result.club,-10}\t{result.Item3}");
+            Console.WriteLine($"{i + 1}\t{result}");
         }
     }
 }
 
-class JumpCompetition
+// Пример использования
+
+class Program
 {
     static void Main()
     {
-        var competitionResults = new List<(string, string, double, double)>
+        var participants = new List<Participant>
         {
-            ("Иванов", "Клуб 1", 5.6, 5.8),
-            ("Петров", "Клуб 2", 5.9, 5.7),
-            ("Сидоров", "Клуб 1", 5.5, 5.6),
-            ("Алексеев", "Клуб 2", 6.1, 6.2),
-            ("Смирнов", "Клуб 1", 5.7, 5.9)
+            new Participant("Иванов", "Клуб1", 10.5, 11.2),
+            new Participant("Петров", "Клуб2", 10.2, 11.5),
+            new Participant("Сидоров", "Клуб1", 9.8, 10.0)
         };
 
-        var protocol = new JumpCompetitionProtocol(competitionResults);
+        var protocol = new JumpCompetitionProtocol(participants);
         protocol.GenerateProtocol();
     }
 }
