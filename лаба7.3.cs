@@ -6,7 +6,7 @@ class Country
 {
     public virtual void ProcessResponses(List<List<string>> responses)
     {
-        Console.WriteLine("Results for class: " + this.GetType().Name);
+        Console.WriteLine("Результаты для страны: " + this.GetType().Name);
         PrintSurveyResults(responses);
     }
 
@@ -45,7 +45,7 @@ class Russia : Country
 {
     public override void ProcessResponses(List<List<string>> responses)
     {
-        Console.WriteLine("Results for Russia:");
+        Console.WriteLine("Результаты для России:");
         base.ProcessResponses(responses);
     }
 }
@@ -54,7 +54,7 @@ class Japan : Country
 {
     public override void ProcessResponses(List<List<string>> responses)
     {
-        Console.WriteLine("Results for Japan:");
+        Console.WriteLine("Результаты для Японии:");
         base.ProcessResponses(responses);
     }
 }
@@ -70,8 +70,6 @@ class InternationalSurvey
 
     public void ProcessInternationalResponses(List<List<string>> responses)
     {
-        Console.WriteLine("International Results:");
-
         foreach (var country in Countries)
         {
             country.ProcessResponses(responses);
@@ -83,17 +81,22 @@ class Program
 {
     static void Main()
     {
+        var russia = new Russia();
+        var japan = new Japan();
+
+        List<Country> countries = new List<Country> { russia, japan };
+
+        var survey = new InternationalSurvey(countries);
+
+        // Пример ответов на опрос
         List<List<string>> responses = new List<List<string>>
         {
-            new List<string> { "Cat", "Dog", "Cat", "Fish" },
-            new List<string> { "Friendliness", "Persistence", "Hard Work", "Modesty" },
-            new List<string> { "Sakura", "Samurai", "Sushi", "Sake", "Sumo" }
+            new List<string> { "A", "B", "A" },
+            new List<string> { "C", "A", "A", "B" },
+            new List<string> { "A", "B" }
         };
 
-        Russia russia = new Russia();
-        Japan japan = new Japan();
-
-        InternationalSurvey internationalSurvey = new InternationalSurvey(new List<Country> { russia, japan });
-        internationalSurvey.ProcessInternationalResponses(responses);
+        survey.ProcessInternationalResponses(responses);
     }
 }
+
