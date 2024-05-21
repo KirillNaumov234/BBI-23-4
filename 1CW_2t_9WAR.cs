@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-
-
-public struct Disciple
+public abstract class Disciple
 {
     public string Name { get; }
     public int Age { get; }
@@ -14,7 +9,7 @@ public struct Disciple
     public double AverageGrade { get; private set; }
     public bool IsRedDiploma { get; private set; }
 
-    public Disciple(string name, int age, int[,] grades)
+    protected Disciple(string name, int age, int[,] grades)
     {
         Name = name;
         Age = age;
@@ -34,11 +29,13 @@ public struct Disciple
         return (double)sum / totalGrades;
     }
 
+    public abstract void PrintInfo();
+
     public static void PrintAllDisciples(Disciple[] disciples)
     {
         foreach (var disciple in disciples)
         {
-            Console.WriteLine($"Name: {disciple.Name}, Age: {disciple.Age}, Average Grade: {disciple.AverageGrade:F2}, Red Diploma: {disciple.IsRedDiploma}");
+            disciple.PrintInfo();
             Console.Write("Grades: ");
             for (int i = 0; i < disciple.Grades.GetLength(0); i++)
             {
@@ -50,16 +47,53 @@ public struct Disciple
             }
         }
     }
+}
 
-    public static void PrintDiscipleInfo(Disciple disciple)
+public class Pupil : Disciple
+{
+    public string Class { get; }
+    public string Specialization { get; }
+
+    public Pupil(string name, int age, int[,] grades, string classGrade, string specialization)
+        : base(name, age, grades)
     {
-        Console.WriteLine($"Name: {disciple.Name}");
-        Console.WriteLine($"Age: {disciple.Age}");
-        Console.WriteLine($"Average Grade: {disciple.AverageGrade:F2}");
-        if (disciple.IsRedDiploma)
+        Class = classGrade;
+        Specialization = specialization;
+    }
+
+    public override void PrintInfo()
+    {
+        Console.WriteLine($"Name: {Name}, Age: {Age}, Class: {Class}, Specialization: {Specialization}, Average Grade: {AverageGrade:F2}, Red Diploma: {IsRedDiploma}");
+    }
+}
+
+public class Student : Disciple
+{
+    public string Group { get; }
+    public bool IsDebtor { get; private set; }
+    public string StudentID { get; }
+
+    public Student(string name, int age, int[,] grades, string group, string studentID)
+        : base(name, age, grades)
+    {
+        Group = group;
+        StudentID = studentID;
+        IsDebtor = CheckIfDebtor(grades);
+    }
+
+    private static bool CheckIfDebtor(int[,] grades)
+    {
+        foreach (var grade in grades)
         {
-            Console.WriteLine("Status: Red Diploma");
+            if (grade == 2)
+                return true;
         }
+        return false;
+    }
+
+    public override void PrintInfo()
+    {
+        Console.WriteLine($"Name: {Name}, Age: {Age}, Group: {Group}, Student ID: {StudentID}, Average Grade: {AverageGrade:F2}, Red Diploma: {IsRedDiploma}, Debtor: {IsDebtor}");
     }
 }
 
@@ -67,26 +101,36 @@ class Program
 {
     static void Main(string[] args)
     {
-        Disciple[] disciples = new Disciple[5]
+        Pupil[] pupils = new Pupil[]
         {
-            new Disciple("Ivanov", 20, new int[,] { { 5, 4, 5, 5, 4 } }),
-            new Disciple("Petrov", 21, new int[,] { { 4, 5, 5, 4, 4 } }),
-            new Disciple("Sidorov", 22, new int[,] { { 3, 4, 4, 3, 3 } }),
-            new Disciple("Smirnov", 20, new int[,] { { 5, 5, 5, 5, 5 } }),
-            new Disciple("Kuznetsov", 21, new int[,] { { 4, 4, 4, 4, 4 } })
+            new Pupil("Ivanov", 16, new int[,] { { 5, 4, 5, 5, 4 }, { 4, 5, 5, 4, 4 }, { 4, 5, 5, 5, 5 } }, "10A", "Math"),
+            new Pupil("Petrov", 17, new int[,] { { 4, 5, 5, 4, 4 }, { 3, 4, 5, 4, 4 }, { 5, 5, 5, 5, 5 } }, "11B", "Science"),
+            new Pupil("Sidorov", 16, new int[,] { { 3, 4, 4, 3, 3 }, { 4, 4, 3, 4, 4 }, { 3, 4, 4, 4, 3 } }, "10C", "Literature"),
+            new Pupil("Smirnov", 17, new int[,] { { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 } }, "11A", "History"),
+            new Pupil("Kuznetsov", 16, new int[,] { { 4, 4, 4, 4, 4 }, { 4, 4, 4, 4, 4 }, { 4, 4, 4, 4, 4 } }, "10B", "Geography")
         };
 
-        Array.Sort(disciples, (d1, d2) => d1.Name.CompareTo(d2.Name));
-
-        Console.WriteLine("All Disciples:");
-        Disciple.PrintAllDisciples(disciples);
-
-        Console.WriteLine("\nDetails of Each Disciple:");
-        foreach (var disciple in disciples)
+        Student[] students = new Student[]
         {
-            Disciple.PrintDiscipleInfo(disciple);
-            Console.WriteLine();
-        }
+            new Student("Ivanova", 20, new int[,] { { 5, 4, 5, 5, 4 }, { 5, 5, 5, 4, 4 } }, "CS101", "12345"),
+            new Student("Petrova", 21, new int[,] { { 4, 5, 5, 4, 4 }, { 4, 5, 4, 4, 4 } }, "CS102", "12346"),
+            new Student("Sidorova", 22, new int[,] { { 3, 4, 4, 3, 2 }, { 4, 4, 3, 4, 4 } }, "CS103", "12347"),
+            new Student("Smirnova", 20, new int[,] { { 5, 5, 5, 5, 5 }, { 5, 5, 5, 5, 5 } }, "CS104", "12348"),
+            new Student("Kuznetsova", 21, new int[,] { { 4, 4, 4, 4, 4 }, { 4, 4, 4, 4, 4 } }, "CS105", "12349")
+        };
+        Array.Sort(pupils, (p1, p2) => p2.AverageGrade.CompareTo(p1.AverageGrade));
+        Array.Sort(students, (s1, s2) => s2.AverageGrade.CompareTo(s1.AverageGrade));
+
+        Console.WriteLine("All Pupils (sorted by average grade descending):");
+        Disciple.PrintAllDisciples(pupils);
+
+        Console.WriteLine("\nAll Students (sorted by average grade descending):");
+        Disciple.PrintAllDisciples(students);
+
+        Disciple[] allDisciples = pupils.Cast<Disciple>().Concat(students.Cast<Disciple>()).ToArray();
+        var redDiplomaDisciples = allDisciples.Where(d => d.IsRedDiploma).ToArray();
+
+        Console.WriteLine("\nAll Red Diploma Holders:");
+        Disciple.PrintAllDisciples(redDiplomaDisciples);
     }
 }
-
