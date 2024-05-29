@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-class country
-
+class Country
 {
     public string Name { get; set; }
-    public int AnswerCount { get; set; }
+    public int AnswerCount { get; private set; }
+    private static int TotalAnswerCount = 0;
 
-    public country
-    (string name)
+    public Country(string name)
     {
         Name = name;
         AnswerCount = 0;
@@ -17,63 +16,53 @@ class country
     public void AddAnswer()
     {
         AnswerCount++;
+        TotalAnswerCount++;
     }
 
     public double GetPercentage()
     {
-        return (double)AnswerCount / TotalAnswerCount  *  100;
+        if (TotalAnswerCount == 0) return 0;
+        return (double)AnswerCount / TotalAnswerCount * 100;
     }
 
-    public static int TotalAnswerCount
+    public static int GetTotalAnswerCount()
     {
-        get
-        {
-            return russia.TotalAnswerCount + japan.TotalAnswerCount;
-        }
+        return TotalAnswerCount;
     }
 }
 
-class russia : country
-
+class Russia : Country
 {
-    public static int TotalAnswerCount { get; private set; }
-
-    public russia() : base("russia")
-    {
-        TotalAnswerCount = 0;
-    }
+    public Russia() : base("Russia") { }
 }
 
-class japan : country
-
+class Japan : Country
 {
-    public static int TotalAnswerCount { get; private set; }
-
-    public japan() : base("japan")
-    {
-        TotalAnswerCount = 0;
-    }
+    public Japan() : base("Japan") { }
 }
 
 class Program
 {
     static void Main()
     {
-        russia russia = new russia();
-        japan japan = new japan();
+        Russia russia = new Russia();
+        Japan japan = new Japan();
 
-        russia.AddAnswer();
-        russia.AddAnswer();
-        russia.AddAnswer();
+        List<string> russianAnswers = new List<string> { "Кошка", "Собака", "Кошка", "Рыба" };
+        List<string> japaneseAnswers = new List<string> { "Сакура", "Самурай", "Суши", "Саке", "Сумо" };
 
-        japan.AddAnswer();
-        japan.AddAnswer();
-        japan.AddAnswer();
+        foreach (var answer in russianAnswers)
+        {
+            russia.AddAnswer();
+        }
+
+        foreach (var answer in japaneseAnswers)
+        {
+            japan.AddAnswer();
+        }
 
         Console.WriteLine($"Ответы для России: {russia.GetPercentage()}%");
         Console.WriteLine($"Ответы для Японии: {japan.GetPercentage()}%");
-
-        Console.WriteLine($"Ответы для обеих стран вместе: {country
-        .TotalAnswerCount}");
+        Console.WriteLine($"Ответы для обеих стран вместе: {Country.GetTotalAnswerCount()}");
     }
 }
